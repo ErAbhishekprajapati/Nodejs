@@ -63,3 +63,47 @@ con.connect((err)=>{
 con.query("select * from user",(err,result)=>{
     console.log(result);
 });
+
+// How to get the mysql data to browser
+// const con = require('./config');
+// const express = require('express');
+// const app = express();
+
+// app.get('/', (req, resp) => {
+//     // Run the database query first, then send a response after
+//     con.query("SELECT * FROM user", (err, result) => {
+//         if (err) {
+//             // Log the error and send an error response if the query fails
+//             // console.error(err);
+//             resp.send("Error fetching users");
+//         } else {
+//             // Send the result as the response if the query succeeds
+//             // console.log(result);
+//             resp.json(result); // Assuming you want to return the result as JSON
+//         }
+//     });
+// });
+
+// // Start the server on port 5000
+// app.listen(5000, () => {
+//     console.log('Server running on port 5000');
+// });
+// here is post method 
+const con = require('./config');
+const express = require('express');
+const app = express();
+app.get('/',(req,resp)=>{
+    con.query("select * from user",(err,result)=>{
+        if(err){ resp.send("error in api")}
+        else{ resp.send(result)}
+    })
+});
+app.post("/",(req,resp)=>{
+    const data={Name:"bhaskar",email:"preeti@512gmail.com",mobile:"95321263728",address:"sonar gaali"};
+    con.query('INsert INTO user SET?',data,(error,result,fields)=>{
+        if(error) error;
+        resp.send(result)
+    })
+});
+
+app.listen(5000);
