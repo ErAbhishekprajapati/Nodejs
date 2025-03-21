@@ -28,7 +28,7 @@
 
 
 // How to work in express js 
-
+// app.get('/',(req,res))// ye routs hai 
 // const express=require('express');
 // const app=express();
 // app.get('/',(req,res)=>{
@@ -42,27 +42,6 @@
  
 
 
-// how to connect db in mysql 
-
-const mysql=require('mysql');
-const con=mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'nodejs'
-});
-con.connect((err)=>{
-    if(err){
-        console.log("not connected");
-    }
-    else{
-        console.log("connected");
-    }
-})
-
-con.query("select * from user",(err,result)=>{
-    console.log(result);
-});
 
 // How to get the mysql data to browser
 // const con = require('./config');
@@ -89,24 +68,24 @@ con.query("select * from user",(err,result)=>{
 //     console.log('Server running on port 5000');
 // });
 // here is post method 
-const con = require('./config');
-const express = require('express');
-const app = express();
-app.get('/',(req,resp)=>{
-    con.query("select * from user",(err,result)=>{
-        if(err){ resp.send("error in api")}
-        else{ resp.send(result)}
-    })
-});
-app.post("/",(req,resp)=>{
-    const data={Name:"bhaskar",email:"preeti@512gmail.com",mobile:"95321263728",address:"sonar gaali"};
-    con.query('INsert INTO user SET?',data,(error,result,fields)=>{
-        if(error) error;
-        resp.send(result)
-    })
-});
+// const con = require('./config');
+// const express = require('express');
+// const app = express();
+// app.get('/',(req,resp)=>{
+//     con.query("select * from user",(err,result)=>{
+//         if(err){ resp.send("error in api")}
+//         else{ resp.send(result)}
+//     })
+// });
+// app.post("/",(req,resp)=>{
+//     const data={Name:"bhaskar",email:"preeti@512gmail.com",mobile:"95321263728",address:"sonar gaali"};
+//     con.query('INsert INTO user SET?',data,(error,result,fields)=>{
+//         if(error) error;
+//         resp.send(result)
+//     })
+// });
 
-app.listen(5000);
+// app.listen(5000);
 
 //PUT method api 
 
@@ -117,48 +96,59 @@ const app = express();
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-app.get('/', (req, resp) => {
-    con.query("SELECT * FROM user", (err, result) => {
-        if (err) {
-            resp.send("Error in API");
-        } else {
-            resp.send(result);
-        }
-    });
-});
+// app.get('/', (req, resp) => {
+//     con.query("SELECT * FROM user", (err, result) => {
+//         if (err) {
+//             resp.send("Error in API");
+//         } else {
+//             resp.send(result);
+//         }
+//     });
+// });
 
-app.post("/", (req, resp) => {
-    const data = req.body; // Ensure you pass data in the body of the POST request
-    // Example:
-    // const data = { Name: "bhaskar", email: "preeti@512gmail.com", mobile: "95321263728", address: "sonar gaali" };
+// app.post("/", (req, resp) => {
+//     // const data = req.body; // Ensure you pass data in the body of the POST request
+//     const data = { Name: "preeti", email: "preeti@512gmail.com", mobile: "95321263728", address: "sonar gaali" };
     
-    con.query('INSERT INTO user SET ?', data, (error, result,fields) => {
-        if (error) {
-            resp.send("Error in inserting data");
-        } else {
-            resp.send(result);
-        }
-    });
-});
-// update ke liye query API
-app.put('/', (req, resp) => {
-    const { newName, oldName } = req.body;  // Expecting the body to have both the new and old name
-    con.query("UPDATE user SET Name = ? WHERE Name = ?", [newName, oldName], (err, result) => {
-        if (err) {
-            resp.send("Error in updating data");
-        } else {
-            resp.send(result);
-        }
-    });
-});
-// delete the name 
-app.delete('/',(req,resp)=>{
-    con.query("DELETE from user WHERE Name="+req.params.Name,(error,results));
-    if(error)throw error;
-    resp.send(results);
+//     con.query('INSERT INTO user SET ?', data, (error, result,fields) => {
+//         if (error) {
+//             resp.send("Error in inserting data");
+//         } else {
+//             resp.send(result);
+//         }
+//     });
+// });
+// app.listen(5000,()=>{
+//     console.log("Server is running on port 5000");
 
+// });
+// update ke liye query API
+// app.put('/', (req, resp) => {
+//     const { newName,oldName } = req.body;  // Expecting the body to have both the new and old name aur fir hum postman me ja kr body raw me {"newName":"Raj" and "oldName":"bashkar"}
+//     con.query("UPDATE user SET Name = ? WHERE Name = ?", [newName, oldName], (err, result) => {
+//         if (err) {
+//             resp.send("Error in updating data");
+//         } else {
+//             resp.send(result);
+//         }
+//     });
+// });
+// app.listen(5000,()=>{
+//     console.log("Server is running on port 5000");
+
+// });
+app.delete('/', (req, resp) => {
+    const { Name } = req.body; // Assuming Name is sent in the request body
+    con.query("DELETE FROM user WHERE Name=?", [Name], (error, results) => {
+        if (error) {
+            return resp.status(500).send({ error: error.message });
+        }
+
+        resp.send({ message: "User deleted successfully", results });
+    });
 });
 
 app.listen(5000, () => {
     console.log("Server is running on port 5000");
-})
+});
+
