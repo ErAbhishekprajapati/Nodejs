@@ -152,3 +152,71 @@ app.listen(5000, () => {
     console.log("Server is running on port 5000");
 });
 
+
+// here is Authentication in profile and login
+const express = require('express');
+const jwt = require('jsonwebtoken'); // Import jsonwebtoken
+const app = express();
+const secretkey = "secretkey";
+
+// Middleware function to verify the token
+function verifyToken(req, resp, next) {
+    const bearerHeader = req.headers['authorization'];
+
+    // Check if token is provided
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(" ");
+        const token = bearer[1]; // Get token from the authorization header
+        req.token = token; // Attach the token to the request object
+        next(); // Proceed to the next middleware or route handler
+    } else {
+        resp.send({
+            result: "Token is missing"
+        });
+    }
+}
+
+// A simple route
+app.get('/', (req, resp) => {
+    resp.json({
+        message: "A simple API"
+    });
+});
+
+// Profile API route
+app.post("/profile", verifyToken, (req, resp) => {
+    jwt.verify(req.token, secretkey, (err, authData) => {
+        if (err) {
+            resp.send({ result: "Invalid token" });
+        } else {
+            resp.json({
+                message: "Profile access",
+                authData
+            });
+        }
+    });
+});
+
+// Login API route to generate token
+app.post('/login', (req, resp) => {
+    const user = {
+        id: 1,
+        username: "abhishek",
+        email: "abhi@123gmail.com"
+    };
+
+    // Sign the JWT token with the user details and secret key
+    jwt.sign({ user }, secretkey, { expiresIn: '300s' }, (err, token) => {
+        if (err) {
+            return resp.status(500).json({ error: 'Error generating token' });
+        }
+        resp.json({ token });
+    });
+});
+
+// Start the server on port 5000
+app.listen(5000, () => {
+    console.log("Server is running on port 5000");
+});
+
+
