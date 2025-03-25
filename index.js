@@ -80,7 +80,7 @@
 // app.post("/",(req,resp)=>{
 //     const data={Name:"bhaskar",email:"preeti@512gmail.com",mobile:"95321263728",address:"sonar gaali"};
 //     con.query('INsert INTO user SET?',data,(error,result,fields)=>{
-//         if(error) error;
+//         if(error) throw error;
 //         resp.send(result)
 //     })
 // });
@@ -89,12 +89,12 @@
 
 //PUT method api 
 
-const con = require('./config');
-const express = require('express');
-const app = express();
+// const con = require('./config');
+// const express = require('express');
+// const app = express();
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
+// // Middleware to parse JSON request bodies
+// app.use(express.json());
 
 // app.get('/', (req, resp) => {
 //     con.query("SELECT * FROM user", (err, result) => {
@@ -105,6 +105,7 @@ app.use(express.json());
 //         }
 //     });
 // });
+// app.listen(5000);
 
 // app.post("/", (req, resp) => {
 //     // const data = req.body; // Ensure you pass data in the body of the POST request
@@ -137,86 +138,240 @@ app.use(express.json());
 //     console.log("Server is running on port 5000");
 
 // });
-app.delete('/', (req, resp) => {
-    const { Name } = req.body; // Assuming Name is sent in the request body
-    con.query("DELETE FROM user WHERE Name=?", [Name], (error, results) => {
-        if (error) {
-            return resp.status(500).send({ error: error.message });
-        }
+// app.delete('/', (req, resp) => {
+//     const { Name } = req.body; // Assuming Name is sent in the request body
+//     con.query("DELETE FROM user WHERE Name=?", [Name], (error, results) => {
+//         if (error) {
+//             return resp.status(500).send({ error: error.message });
+//         }
+ 
+//         resp.send({ message: "User deleted successfully", results });
+//     });
+// });
 
-        resp.send({ message: "User deleted successfully", results });
-    });
-});
+// app.listen(5000, () => {
+//     console.log("Server is running on port 5000");
+// });
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-});
+// // const con = require('./config');
+// const express = require('express');
+// const jwt = require('jsonwebtoken'); // Import jsonwebtoken
+// const app = express();
+// const secretkey = "secretkey";
+
+// // Middleware function to verify the token
+// function verifyToken(req, resp, next) {
+//     const bearerHeader = req.headers['authorization'];
+
+//     // Check if token is provided
+//     if (typeof bearerHeader !== 'undefined') {
+//         const bearer = bearerHeader.split(" ");
+//         const token = bearer[1]; // Get token from the authorization header
+//         req.token = token; // Attach the token to the request object
+//         next(); // Proceed to the next middleware or route handler
+//     } else {
+//         resp.send({
+//             result: "Token is missing"
+//         });
+//     }
+// }
+
+// // A simple route
+// app.get('/', (req, resp) => {
+//     resp.json({
+//         message: "A simple API"
+//     });
+// });
+
+// // Profile API route
+// app.post("/profile", verifyToken, (req, resp) => {
+//     jwt.verify(req.token, secretkey, (err, authData) => {
+//         if (err) {
+//             resp.send({ result: "Invalid token" });
+//         } else {
+//             resp.json({
+//                 message: "Profile access",
+//                 authData
+//             });
+//         }
+//     });
+// });
+
+// // Login API route to generate token
+// app.post('/login', (req, resp) => {
+//     const user = {
+//         id: 1,
+//         username: "abhishek",
+//         email: "abhi@123gmail.com"
+//     };
+
+//     // Sign the JWT token with the user details and secret key
+//     jwt.sign({ user }, secretkey, { expiresIn: '300s' }, (err, token) => {
+//         if (err) {
+//             return resp.status(500).json({ error: 'Error generating token' });
+//         }
+//         resp.json({ token });
+//     });
+// });
+
+// // Start the server on port 5000
+// app.listen(5000, () => {
+//     console.log("Server is running on port 5000");
+// });
+
+// const con = require('./config');
+// const express = require('express');
+// const app = express();
+// app.use(express.json());
+
+// app.get("/search/:key",async (req,resp)=>{
+//     console.log(req.params.key)
+//     let data = await user.find({
+//         "$or":[
+//             {"Name":{$regex:req.params.key}}  // this is regex rule here
+//         ]
+//     })
+//     resp.send(data)
+// });
+// app.listen(6000);
+
+//const con=require('./config');
+// const express =require('express');
+// const app=express();
+// app.use(express.json());
+
+// app.get("/",async(req,resp)=>{
+//     const response=await fetch("https://jsonplaceholder.typicode.com/posts");
+//     const data=await response.json();
+//     console.log(data);
+//     resp.send(data);
+//     //Loop through the data and log the userId for each post
+//     // data.forEach(post => {
+//     //     console.log(post.userId);
+//     // });
+
+// });
+//app.listen(5000);
+
+// const express = require('express');
+// const app = express();
+// const fetch = require('node-fetch');  // Make sure you have node-fetch installed
+
+// app.use(express.json());
+
+// app.get("/posts/:userId", async (req, resp) => {
+//     const { userId } = req.params; // Extract userId from the URL
+//     const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
+//     const data = await response.json();
+//     console.log(data);
+//     resp.send(data);  // Send the filtered data as the response to the client
+// });
+
+// app.listen(5000, () => {
+//     console.log("Server running on port 5000");
+// });
 
 
-// here is Authentication in profile and login
-const express = require('express');
-const jwt = require('jsonwebtoken'); // Import jsonwebtoken
-const app = express();
-const secretkey = "secretkey";
+// const fetch = require('node-fetch'); // Ensure node-fetch is installed
+// async function fetchdata(req,resp) {
+//     const response= await fetch('https://jsonplaceholder.typicode.com/posts');
+//     console.log(response);
+//     //loop throw fetch data to userid
+//     // data.forEach(post => {
+//     //     console.log(post.userId);
+        
+//     // });
+// }
+// fetchdata();
+// const express=require('express');
+// const app=express();
+// app.use(express.json());
 
-// Middleware function to verify the token
-function verifyToken(req, resp, next) {
-    const bearerHeader = req.headers['authorization'];
+// app.get('/',(req,resp)=>{
+//     resp.send("hellow Abhishek ji")
 
-    // Check if token is provided
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(" ");
-        const token = bearer[1]; // Get token from the authorization header
-        req.token = token; // Attach the token to the request object
-        next(); // Proceed to the next middleware or route handler
-    } else {
-        resp.send({
-            result: "Token is missing"
-        });
-    }
-}
+// });
+// app.listen(6000); 
 
-// A simple route
-app.get('/', (req, resp) => {
-    resp.json({
-        message: "A simple API"
-    });
-});
+// const http = require('http');
+// // Create an HTTP server
+// const server = http.createServer((req, res) => {
+//     res.write('Hello, world my name is abhishek!');
+//     res.end();
+//   });
 
-// Profile API route
-app.post("/profile", verifyToken, (req, resp) => {
-    jwt.verify(req.token, secretkey, (err, authData) => {
-        if (err) {
-            resp.send({ result: "Invalid token" });
-        } else {
-            resp.json({
-                message: "Profile access",
-                authData
-            });
-        }
-    });
-});
+//   server.on('request',(req,res)=>{
+//     console.log("recieved request")
+//   });
+//   server.listen(3000);
 
-// Login API route to generate token
-app.post('/login', (req, resp) => {
-    const user = {
-        id: 1,
-        username: "abhishek",
-        email: "abhi@123gmail.com"
-    };
+// Import the EventEmitter class from the events module
+// const EventEmitter = require('events');
 
-    // Sign the JWT token with the user details and secret key
-    jwt.sign({ user }, secretkey, { expiresIn: '300s' }, (err, token) => {
-        if (err) {
-            return resp.status(500).json({ error: 'Error generating token' });
-        }
-        resp.json({ token });
-    });
-});
+// // Create an instance of EventEmitter
+// const myEmitter = new EventEmitter();
 
-// Start the server on port 5000
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-});
+// // Create a listener for an event
+// myEmitter.on('event', () => {
+//   console.log('An event occurred!');
+// });
+// myEmitter.on('event',()=>{
+//     console.log('end of');
+// });
 
+// // Emit the event
+// myEmitter.emit('event');
 
+// let promise = new Promise((resolve,reject)=>{
+//     let success=true;
+//     if(success){
+//         resolve("operation success")
+//     }
+//     else{
+//         reject("operation failled")
+//     }
+
+// });
+// promise
+//   .then(result => {
+//     console.log(result); // This runs if the promise is fulfilled
+//   })
+//   .catch(error => {
+//     console.error(error); // This runs if the promise is rejected
+//   });
+
+//  function isPrime(num){
+//     if(num<2) return false;
+//     for(let i=2;i<num; i++){
+//         if( num%i===0) return false;
+
+//     }
+//     return true;     
+//  } 
+//  console.log(isPrime(8));
+
+//  function isPalindrone(n){
+//     return n.toString()===n.toString().split('').reverse().join('');
+
+//  }
+//  console.log(isPalindrone(123));// this is false
+//  console.log(isPalindrone(121));// this is true
+//factorial number;
+// function fac(n){
+//     result=1;
+//     for(let i=1;i<=n;i++){
+//         result *=i;
+
+//     }
+    
+//     return result
+// }
+// console.log(fac(5));
+
+// normal async or await to fetch data
+async function fetchData() {
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+    const data = await response.json();
+    console.log(data);
+  }
+  fetchData();
