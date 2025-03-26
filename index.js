@@ -34,15 +34,13 @@
 // app.get('/',(req,res)=>{
 //     res.send('this is home pageasdsdfghfg');
 // });
+//app.listen(5000);
 
 // app.get('/about',(req,res)=>{
 //     res.send('this is about page');
 // });
 // app.listen(5000);
  
-
-
-
 // How to get the mysql data to browser
 // const con = require('./config');
 // const express = require('express');
@@ -306,21 +304,21 @@
 //   server.listen(3000);
 
 // Import the EventEmitter class from the events module
-// const EventEmitter = require('events');
+// const EventEmitte = require('events');
 
 // // Create an instance of EventEmitter
-// const myEmitter = new EventEmitter();
+// const myEmitte = new EventEmitte();
 
 // // Create a listener for an event
-// myEmitter.on('event', () => {
+// myEmitte.on('event', () => {
 //   console.log('An event occurred!');
 // });
-// myEmitter.on('event',()=>{
+// myEmitte.on('event',()=>{ 
 //     console.log('end of');
 // });
 
 // // Emit the event
-// myEmitter.emit('event');
+// myEmitte.emit('event');
 
 // let promise = new Promise((resolve,reject)=>{
 //     let success=true;
@@ -369,9 +367,65 @@
 // console.log(fac(5));
 
 // normal async or await to fetch data
-async function fetchData() {
-    const response = await fetch("https://jsonplaceholder.typicode.com/todos");
-    const data = await response.json();
-    console.log(data);
+// async function fetchData() {
+//     const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+//     const data = await response.json();
+//     console.log(data);
+//   }
+//   fetchData();
+
+
+// 1. even or odd ka program 
+// function sum(n){
+//   if(n%2===0){
+//     return "even";
+//   }
+//   else{
+//     return "odd";
+//   }
+// }
+// console.log(sum(5))
+
+//2. find the largest number
+
+// function largest(a,b,c){
+//   return Math.max(a,b,c);
+
+// }
+
+// console.log(largest(2,4,3))
+ 
+// // 3. Fibonacci Sequence
+
+// function fibo(n){
+//   let a=0;b=1;
+//   for(let i=0;i<n;i++){
+//     console.log(a);
+//     let temp=a;
+//     a=b;
+//     b=temp+a;
+//   }
+// }
+// fibo(6)
+// // 4. logical base 
+// function gratest(a,b,c){
+//   if(a>=b&&a>=c){
+//     return a;
+//   }else if(b>=a&&b>=c){
+//     return b;
+//   }else{
+//     return c;
+//   }
+// }
+// console.log(gratest(6,4,3));
+
+const express =require('express');
+const app =express();
+app.get('/',(req,resp)=>{
+  const user={
+    id:1,
+    name:"abhishek",
+    
   }
-  fetchData();
+  resp.send(user);
+});app.listen(5000);
