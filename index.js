@@ -429,3 +429,50 @@ app.get('/',(req,resp)=>{
   }
   resp.send(user);
 });app.listen(5000);
+
+
+// server.js
+
+const express = require('express');
+const app = express();
+const con = require('./config');
+
+// API 1 - Get User Data
+app.get('/api/users', (req, res) => {
+    con.query("SELECT * FROM users", (err, result) => {
+        if (err) {
+            res.status(500).send("Error fetching users");
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
+
+// API 2 - Get Product Data
+app.get('/api/products', (req, res) => {
+    con.query("SELECT * FROM products", (err, result) => {
+        if (err) {
+            res.status(500).send("Error fetching products");
+        } else {
+            res.status(200).json(result);
+        }
+    });
+});
+
+// API 3 - Create a New User
+app.post('/api/users', express.json(), (req, res) => {
+    const { name, email } = req.body;
+    con.query("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], (err, result) => {
+        if (err) {
+            res.status(500).send("Error adding user");
+        } else {
+            res.status(201).send("User added successfully");
+        }
+    });
+});
+
+// Starting the server
+app.listen(5000, () => {
+    console.log('Server running on port 5000');
+});
+
