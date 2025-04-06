@@ -476,3 +476,21 @@ app.listen(5000, () => {
     console.log('Server running on port 5000');
 });
 
+
+
+const express = require('express');
+const app = express();
+const con = require('./config');
+app.get("/",async(req,resp)=>{
+    const response=await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data=await response.json();
+    console.log(data);
+    resp.send(data);
+    //Loop through the data and log the userId for each post
+    // data.forEach(post => {
+    //     console.log(post.userId);
+    // });
+
+});
+app.listen(5000);
+
